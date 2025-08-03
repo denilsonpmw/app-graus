@@ -1,0 +1,303 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Tipos de usuário
+enum UserRole {
+  ADMIN
+  AFFILIATE
+}
+
+// Planos de assinatura
+enum SubscriptionPlan {
+  LIGHT
+  ADVANCED
+  PREMIUM
+}
+
+// Status da assinatura
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+// Status das vendas
+enum SaleStatus {
+  LEAD
+  PROPOSAL
+  CLOSED
+  PAID
+  CANCELLED
+}
+
+// Métodos de pagamento
+enum PaymentMethod {
+  PIX
+  CREDIT_CARD
+}
+
+// Status do pagamento
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String
+  phone       String?
+  cpfCnpj     String?  @unique
+  role        UserRole @default(AFFILIATE)
+  password    String
+  avatar      String?
+  isActive    Boolean  @default(true)
+  isAdmin     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  affiliate   Affiliate?
+  sessions    Session[]
+
+  @@map("users")
+}
+
+model Affiliate {
+  id                String             @id @default(cuid())
+  userId            String             @unique
+  affiliateCode     String             @unique // Código único para links
+  subscriptionPlan  SubscriptionPlan
+  subscriptionStatus SubscriptionStatus @default(PENDING)
+  bankAccount       String?
+  bankCode          String?
+  bankAgency        String?
+  pixKey            String?
+  totalCommissions  Decimal            @default(0) @db.Decimal(10, 2)
+  paidCommissions   Decimal            @default(0) @db.Decimal(10, 2)
+  pendingCommissions Decimal           @default(0) @db.Decimal(10, 2)
+  subscriptionDate  DateTime?
+  subscriptionExpiry DateTime?
+  joinedGroupSupport Boolean           @default(false)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  // Relacionamentos
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscriptions     Subscription[]
+  sales             Sale[]
+  commissions       Commission[]
+  affiliateLinks    AffiliateLink[]
+  clicks            LinkClick[]
+
+  @@map("affiliates")
+}
+
+model Subscription {
+  id              String            @id @default(cuid())
+  affiliateId     String
+  plan            SubscriptionPlan
+  status          SubscriptionStatus @default(PENDING)
+  amount          Decimal           @db.Decimal(10, 2)
+  paymentMethod   PaymentMethod
+  installments    Int               @default(1)
+  startDate       DateTime?
+  endDate         DateTime?
+  paymentId       String?           // ID do gateway de pagamento
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  // Relacionamentos
+  affiliate       Affiliate         @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+  payments        Payment[]
+
+  @@map("subscriptions")
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  subscriptionId  String
+  amount          Decimal       @db.Decimal(10, 2)
+  status          PaymentStatus @default(PENDING)
+  paymentMethod   PaymentMethod
+  installmentNumber Int         @default(1)
+  totalInstallments Int         @default(1)
+  dueDate         DateTime
+  paymentDate     DateTime?
+  gatewayPaymentId String?      // ID do gateway
+  gatewayResponse Json?         // Resposta completa do gateway
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relacionamentos
+  subscription    Subscription  @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  category    String?
+  isActive    Boolean  @default(true)
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  sales       Sale[]
+  affiliateLinks AffiliateLink[]
+
+  @@map("products")
+}
+
+model AffiliateLink {
+  id               String   @id @default(cuid())
+  affiliateId      String
+  customSlug       String?
+  productId        String?
+  campaignName     String?
+  utmSource        String?
+  utmMedium        String?
+  utmCampaign      String?
+  isPrimary        Boolean  @default(false)
+  clicksCount      Int      @default(0)
+  conversionsCount Int      @default(0)
+  isActive         Boolean  @default(true)
+  expiresAt        DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relacionamentos
+  affiliate        Affiliate     @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+  product          Product?      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  clicks           LinkClick[]
+  sales            Sale[]
+
+  @@unique([affiliateId, customSlug])
+  @@map("affiliate_links")
+}
+
+model LinkClick {
+  id              String   @id @default(cuid())
+  linkId          String
+  affiliateId     String
+  ipAddress       String?
+  userAgent       String?
+  referer         String?
+  utmSource       String?
+  utmMedium       String?
+  utmCampaign     String?
+  sessionId       String?
+  converted       Boolean  @default(false)
+  conversionValue Decimal? @db.Decimal(10, 2)
+  createdAt       DateTime @default(now())
+
+  // Relacionamentos
+  link            AffiliateLink @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  affiliate       Affiliate     @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+
+  @@map("link_clicks")
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  cpfCnpj   String?
+  address   Json?    // Endereço completo como JSON
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  sales     Sale[]
+
+  @@map("customers")
+}
+
+model Sale {
+  id              String     @id @default(cuid())
+  customerId      String
+  productId       String
+  affiliateId     String
+  affiliateLinkId String?
+  amount          Decimal    @db.Decimal(10, 2)
+  status          SaleStatus @default(LEAD)
+  commissionRate  Decimal    @db.Decimal(5, 2) // Percentual da comissão
+  commissionAmount Decimal   @db.Decimal(10, 2)
+  contractSigned  Boolean    @default(false)
+  installationDate DateTime?
+  notes           String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  // Relacionamentos
+  customer        Customer   @relation(fields: [customerId], references: [id])
+  product         Product    @relation(fields: [productId], references: [id])
+  affiliate       Affiliate  @relation(fields: [affiliateId], references: [id])
+  affiliateLink   AffiliateLink? @relation(fields: [affiliateLinkId], references: [id])
+  commission      Commission?
+
+  @@map("sales")
+}
+
+model Commission {
+  id          String        @id @default(cuid())
+  saleId      String        @unique
+  affiliateId String
+  amount      Decimal       @db.Decimal(10, 2)
+  status      PaymentStatus @default(PENDING)
+  paymentDate DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relacionamentos
+  sale        Sale          @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  affiliate   Affiliate     @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+
+  @@map("commissions")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model ContentItem {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  type        String   // VIDEO, PDF, IMAGE, etc.
+  url         String
+  category    String?  // MARKETING, TRAINING, SUPPORT
+  planAccess  String   // Planos que têm acesso (JSON string: ["LIGHT", "ADVANCED", "PREMIUM"])
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("content_items")
+}
