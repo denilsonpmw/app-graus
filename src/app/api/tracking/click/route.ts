@@ -7,7 +7,8 @@ export async function POST(request: NextRequest) {
     let body;
     try {
       body = await request.json();
-    } catch (parseError) {
+    } catch (error) {
+      console.error('JSON parse error:', error);
       return NextResponse.json(
         { error: 'Formato de dados inválido' }, 
         { status: 400 }
@@ -17,7 +18,6 @@ export async function POST(request: NextRequest) {
     const { 
       affiliateCode, 
       customSlug, 
-      source,
       userAgent,
       referer,
       utmSource,
