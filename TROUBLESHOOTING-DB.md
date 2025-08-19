@@ -67,7 +67,7 @@ npm run dev
    - Confirme que não há erros
 
 2. **Teste a aplicação:**
-   - Acesse: `https://graussolar.railway.app`
+   - Acesse: `https://graussolar.up.railway.app`
    - Verifique se carrega corretamente
 
 ## 📊 **Scripts Corretos para Cada Ambiente**
@@ -94,6 +94,6 @@ npx prisma studio        # Visualizar dados
 ✅ Código commitado e enviado para o Railway  
 ✅ Deploy será executado automaticamente  
 ✅ Migrations aplicadas durante o build  
-✅ Aplicação disponível em: https://graussolar.railway.app  
+✅ Aplicação disponível em: https://graussolar.up.railway.app  
 
 **Aguarde alguns minutos e verifique se a aplicação está funcionando!**

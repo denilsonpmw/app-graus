@@ -47,7 +47,7 @@ railway up
 
 ### URLs para verificar:
 - **Railway Status**: https://status.railway.app
-- **App URL**: https://graussolar.railway.app
+- **App URL**: https://graussolar.up.railway.app
 - **GitHub Commits**: https://github.com/denilsonpmw/app-graus/commits/main
 
 ### Se nada funcionar:

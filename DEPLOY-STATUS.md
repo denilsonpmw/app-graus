@@ -51,6 +51,6 @@ railway up
 - Se aparecer erro, copie o log completo
 
 ### Próximos passos se deploy funcionar:
-1. Verificar se app carrega: https://graussolar.railway.app
+1. Verificar se app carrega: https://graussolar.up.railway.app
 2. Testar funcionalidades básicas
 3. Verificar logs de runtime para erros do Prisma/DB

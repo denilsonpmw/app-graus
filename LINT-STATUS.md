@@ -34,6 +34,6 @@ npm run dev
 
 ### Status do Deploy:
 ✅ **Railway build**: Funcionando
-✅ **App acessível**: https://graussolar.railway.app
+✅ **App acessível**: https://graussolar.up.railway.app
 ✅ **Banco configurado**: PostgreSQL
 🔄 **Próximo**: Testar funcionalidades da aplicação

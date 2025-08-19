@@ -55,4 +55,4 @@ railway open
 - **Repositório**: denilsonpmw/app-graus
 - **Branch**: main
 - **Último commit**: dc33f4e
-- **App URL**: https://graussolar.railway.app
+- **App URL**: https://graussolar.up.railway.app
