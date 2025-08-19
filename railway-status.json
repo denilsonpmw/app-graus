@@ -1,0 +1,9 @@
+{
+  "railway": {
+    "lastUpdate": "2025-08-19T13:15:00Z",
+    "buildVersion": "1.0.2",
+    "triggerDeploy": true,
+    "commit": "763014f",
+    "status": "testing-webhook"
+  }
+}

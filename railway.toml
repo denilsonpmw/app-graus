@@ -10,4 +10,5 @@ restartPolicyMaxRetries = 3
 
 [variables]
 NODE_ENV = "production"
-RAILWAY_BUILD_VERSION = "1.0.1"
+RAILWAY_BUILD_VERSION = "1.0.2"
+DEPLOY_TIMESTAMP = "2025-08-19T13:15:00Z"

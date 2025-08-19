@@ -1,7 +1,8 @@
 {
   "name": "app-graus",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
+  "description": "Sistema de Afiliação Energia Solar - Build 2025-08-19",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
