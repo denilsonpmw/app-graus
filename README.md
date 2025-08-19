@@ -45,7 +45,61 @@ Sistema web completo para gerenciamento de programa de afiliação focado em ven
 - **Mercado Pago** - Pagamentos alternativos
 - **WhatsApp API** - Comunicação com afiliados
 
-## 📊 Modelo de Negócio
+## � Deploy no Railway
+
+Este projeto está configurado para deploy automático no Railway com Docker otimizado.
+
+### Passos para Deploy
+
+1. **Acesse o Railway**
+   - Vá para [railway.app](https://railway.app)
+   - Conecte com sua conta GitHub
+   - Clique em "New Project"
+
+2. **Configure o Repositório**
+   - Selecione "Deploy from GitHub repo"
+   - Escolha este repositório
+   - O Railway detecta automaticamente Next.js
+
+3. **Adicione PostgreSQL**
+   - No dashboard, clique em "Add Plugin"
+   - Selecione PostgreSQL
+   - A `DATABASE_URL` será gerada automaticamente
+
+4. **Configure Variáveis de Ambiente**
+   ```bash
+   DATABASE_URL=postgresql://... (gerada automaticamente)
+   NEXTAUTH_URL=https://seu-app.railway.app
+   NEXTAUTH_SECRET=seu-secret-super-seguro
+   NODE_ENV=production
+   ```
+
+5. **Deploy Automático**
+   - O Railway fará o build e deploy automaticamente
+   - Acesse sua aplicação pela URL fornecida
+
+### Arquivos de Configuração
+- `Dockerfile` - Container otimizado multi-stage
+- `railway.toml` - Configurações específicas do Railway  
+- `next.config.ts` - Output standalone para produção
+- `.env.example` - Template das variáveis necessárias
+
+### Comandos úteis
+```bash
+# Instalar Railway CLI
+npm install -g @railway/cli
+
+# Deploy local
+railway login && railway up
+
+# Ver logs em tempo real
+railway logs
+
+# Abrir app no browser
+railway open
+```
+
+## �📊 Modelo de Negócio
 
 ### Planos de Assinatura Anual
 
