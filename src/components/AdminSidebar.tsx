@@ -17,6 +17,7 @@ import {
   LogOut,
   Shield
 } from "lucide-react";
+import Logo from "./Logo";
 
 interface AdminSidebarProps {
   className?: string;
@@ -77,15 +78,12 @@ export default function AdminSidebar({ className = "", activeTab, onTabChange }:
 
   return (
     <div className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 ${className}`}>
-      <div className="flex items-center space-x-2 p-6 border-b">
-        <Zap className="h-8 w-8 text-solar-600" />
-        <div>
-          <h1 className="text-xl font-bold text-gray-900">Graus Solar</h1>
-          <p className="text-xs text-gray-500 flex items-center">
-            <Shield className="h-3 w-3 mr-1" />
-            Painel Admin
-          </p>
-        </div>
+      <div className="flex flex-col items-center p-6 border-b">
+        <Logo className="mb-2" width={96} height={96} />
+        <p className="text-sm font-semibold text-gray-700 flex items-center">
+          <Shield className="h-4 w-4 mr-1" />
+          Painel Admin
+        </p>
       </div>
       
       <nav className="mt-6">

@@ -14,6 +14,7 @@ import {
   Settings,
   LogOut
 } from "lucide-react";
+import Logo from "./Logo";
 
 interface MenuItem {
   href: string;
@@ -79,9 +80,8 @@ export default function Sidebar({ className = "", activeTab, onTabChange }: Side
 
   return (
     <div className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 ${className}`}>
-      <div className="flex items-center space-x-2 p-6 border-b">
-        <Zap className="h-8 w-8 text-solar-600" />
-        <h1 className="text-xl font-bold text-gray-900">Graus Solar</h1>
+      <div className="flex items-center justify-center p-6 border-b">
+        <Logo width={96} height={96} />
       </div>
       
       <nav className="mt-6">

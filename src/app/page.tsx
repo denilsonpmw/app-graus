@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Users, TrendingUp, Shield, Star, Zap, BarChart3, MessageCircle } from "lucide-react";
+import Logo from '@/components/Logo';
 
 export default function HomePage() {
   const plans = [
@@ -58,7 +59,7 @@ export default function HomePage() {
       <header className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Zap className="h-8 w-8 text-solar-600" />
+            <Logo width={32} height={32} />
             <h1 className="text-2xl font-bold text-gray-900">Graus Solar</h1>
           </div>
           <nav className="hidden md:flex space-x-6">
@@ -267,7 +268,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Zap className="h-6 w-6 text-solar-500" />
+                <Logo width={24} height={24} />
                 <span className="text-xl font-bold">Graus Solar</span>
               </div>
               <p className="text-gray-400">

@@ -5,6 +5,7 @@ import { signIn, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Zap, Eye, EyeOff, Loader2 } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -70,7 +71,7 @@ export default function LoginPage() {
         <div className="text-center">
           <div className="flex justify-center">
             <div className="flex items-center space-x-2">
-              <Zap className="h-10 w-10 text-solar-600" />
+              <Logo width={40} height={40} />
               <h1 className="text-3xl font-bold text-gray-900">Graus Solar</h1>
             </div>
           </div>
