@@ -23,7 +23,7 @@ export default {
           800: '#92400e',
           900: '#78350f',
         },
-        'custom-green': {
+        green: {
           50: '#f0fdf4',
           100: '#dcfce7',
           200: '#bbf7d0',
@@ -34,10 +34,6 @@ export default {
           700: '#15803d',
           800: '#166534',
           900: '#14532d',
-        },
-        // Azul personalizado
-        'brand-blue': {
-          500: '#00a9ec',
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
