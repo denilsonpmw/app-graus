@@ -1,10 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Sidebar from "@/components/Sidebar";
+
+// Forçar renderização dinâmica
+export const dynamic = 'force-dynamic';
+
 import { 
   PlayCircle, 
   FileText, 
@@ -22,17 +26,18 @@ import {
   Target
 } from "lucide-react";
 
-export default function AreaExclusivaPage() {
+// Componente separado para usar useSearchParams
+function AreaExclusivaContent() {
   const [activeTab, setActiveTab] = useState("treinamentos");
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   
   // Detecta a aba via URL quando a página carrega
-  useEffect(() => {
-    const tab = searchParams.get('tab');
-    if (tab && ['treinamentos', 'materiais', 'suporte'].includes(tab)) {
-      setActiveTab(tab);
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   const tab = searchParams.get('tab');
+  //   if (tab && ['treinamentos', 'materiais', 'suporte'].includes(tab)) {
+  //     setActiveTab(tab);
+  //   }
+  // }, [searchParams]);
   
   // Dados dos treinamentos
   const trainings = [
@@ -519,5 +524,14 @@ export default function AreaExclusivaPage() {
         </main>
       </div>
     </div>
+  );
+}
+
+// Componente principal com Suspense
+export default function AreaExclusivaPage() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <AreaExclusivaContent />
+    </Suspense>
   );
 }
