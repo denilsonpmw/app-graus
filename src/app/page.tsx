@@ -98,9 +98,14 @@ export default function HomePage() {
           {/* Hero Section */}
           <section className="container mx-auto px-4 py-20 text-center">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-6xl md:text-7xl font-bold mb-6">
-                Seja um{" "}
-                <GradientText variant="primary" className="inline-block">
+              <h2 className="text-6xl md:text-7xl font-bold mb-6 leading-tight">
+                Seja um {""}
+                <GradientText
+                  variant="primary"
+                  size="7xl"
+                  weight="extrabold"
+                  className="inline-block md:mx-2"
+                >
                   Afiliado
                 </GradientText>{" "}
                 de<br />
@@ -108,7 +113,7 @@ export default function HomePage() {
               </h2>
               <p className="text-xl md:text-2xl text-white/80 mb-10 max-w-3xl mx-auto leading-relaxed">
                 Ganhe até{" "}
-                <GradientText variant="secondary" className="font-bold inline-block">
+                <GradientText variant="secondary" size="2xl" className="font-bold inline-block">
                   5% de comissão
                 </GradientText>{" "}
                 vendendo kits de energia solar. 
@@ -140,21 +145,24 @@ export default function HomePage() {
                 value="500+"
                 icon={Users}
                 variant="glass"
-                color="blue"
+                color="cyan"
+                highContrast
               />
               <StatsCard
                 title="Comissões Pagas"
                 value="R$ 2M+"
                 icon={TrendingUp}
                 variant="glass"
-                color="yellow"
+                color="emerald"
+                highContrast
               />
               <StatsCard
                 title="Vendas Realizadas"
                 value="1.200+"
                 icon={BarChart3}
                 variant="glass"
-                color="blue"
+                color="orange"
+                highContrast
               />
             </div>
           </section>

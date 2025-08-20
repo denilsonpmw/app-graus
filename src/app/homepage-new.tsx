@@ -75,8 +75,8 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
-        <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-          Seja um <span className="text-solar-600">Afiliado</span> de 
+        <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+          Seja um <span className="text-solar-600 inline-block text-[1.15em] md:text-[1.25em] font-extrabold tracking-tight">Afiliado</span> de 
           <br />Energia Solar
         </h2>
         <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">

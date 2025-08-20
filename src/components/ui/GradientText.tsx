@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 interface GradientTextProps {
   children: ReactNode;
   variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'rainbow' | 'light' | 'contrast';
-  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl';
   weight?: 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold';
   className?: string;
   as?: 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
@@ -56,6 +56,12 @@ export default function GradientText({
         return 'text-3xl';
       case '4xl':
         return 'text-4xl';
+      case '5xl':
+        return 'text-5xl';
+      case '6xl':
+        return 'text-6xl';
+      case '7xl':
+        return 'text-7xl';
       default:
         return 'text-base';
     }

@@ -12,9 +12,9 @@ CREATE TABLE "AffiliateLink" (
     "clicksCount" INTEGER NOT NULL DEFAULT 0,
     "conversionsCount" INTEGER NOT NULL DEFAULT 0,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
-    "expiresAt" DATETIME,
+    "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP NOT NULL,
+    "expiresAt" TIMESTAMP,
 
     CONSTRAINT "AffiliateLink_pkey" PRIMARY KEY ("id")
 );
@@ -33,7 +33,7 @@ CREATE TABLE "LinkClick" (
     "sessionId" TEXT,
     "converted" BOOLEAN NOT NULL DEFAULT false,
     "conversionValue" DECIMAL(10,2),
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "LinkClick_pkey" PRIMARY KEY ("id")
 );

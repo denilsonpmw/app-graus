@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { createPaginationResult } from '@/lib/utils/server-helpers'
 
+// Tipos de status válidos conforme enum PaymentStatus do schema (PENDING, PAID, FAILED, REFUNDED)
 interface CommissionFilters {
   search?: string
-  status?: 'PENDING' | 'PAID' | 'CANCELLED'
+  status?: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED'
   affiliateId?: string
   startDate?: Date
   endDate?: Date
@@ -134,7 +135,8 @@ export async function GET(request: NextRequest) {
       } : null,
     }))
 
-    const pagination = createPaginationResult(processedCommissions, total, page, limit)
+  // createPaginationResult espera ordem (data, page, limit, total)
+  const pagination = createPaginationResult(processedCommissions, page, limit, total)
 
     return NextResponse.json({
       data: processedCommissions,
@@ -175,15 +177,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Atualizar comissões para status PAID
-    const updatedCommissions = await prisma.commission.updateMany({
+  const updatedCommissions = await prisma.commission.updateMany({
       where: {
         id: { in: commissionIds },
         status: 'PENDING'
       },
       data: {
         status: 'PAID',
-        paidAt: new Date(),
-        updatedAt: new Date()
+    // Campo correto no modelo: paymentDate (não existe paidAt)
+    paymentDate: new Date()
       }
     })
 

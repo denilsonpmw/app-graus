@@ -11,7 +11,8 @@ interface StatsCardProps {
   trend?: 'up' | 'down' | 'neutral';
   trendValue?: string;
   variant?: 'glass' | 'solid' | 'gradient';
-  color?: 'blue' | 'green' | 'yellow' | 'purple' | 'pink' | 'indigo';
+  color?: 'blue' | 'green' | 'yellow' | 'purple' | 'pink' | 'indigo' | 'cyan' | 'orange' | 'emerald';
+  highContrast?: boolean; // força branco puro no ícone
   className?: string;
 }
 
@@ -24,6 +25,7 @@ export default function StatsCard({
   trendValue,
   variant = 'glass',
   color = 'blue',
+  highContrast = false,
   className = ''
 }: StatsCardProps) {
   const getVariantClasses = () => {
@@ -40,27 +42,34 @@ export default function StatsCard({
   };
 
   const getColorClasses = () => {
+    if (highContrast) return 'text-white drop-shadow-md';
     const colors = {
-      blue: 'text-[#00a9ec]',
-      green: 'text-green-400',
-      yellow: 'text-[#ffcc00]',
-      purple: 'text-purple-400',
-      pink: 'text-pink-400',
-      indigo: 'text-[#00445d]'
-    };
-    return colors[color];
+      blue: 'text-[#29c3ff]',
+      green: 'text-green-300',
+      yellow: 'text-yellow-300',
+      purple: 'text-purple-300',
+      pink: 'text-pink-300',
+      indigo: 'text-indigo-300',
+      cyan: 'text-cyan-300',
+      orange: 'text-orange-300',
+      emerald: 'text-emerald-300'
+    } as const;
+    return colors[color] || 'text-white';
   };
 
   const getIconBgClasses = () => {
     const backgrounds = {
-      blue: 'bg-[#00a9ec]/20',
-      green: 'bg-green-500/20',
-      yellow: 'bg-[#ffcc00]/20',
-      purple: 'bg-purple-500/20',
-      pink: 'bg-pink-500/20',
-      indigo: 'bg-[#00445d]/20'
-    };
-    return backgrounds[color];
+      blue: 'bg-[#00a9ec]/25',
+      green: 'bg-green-500/25',
+      yellow: 'bg-[#ffcc00]/25',
+      purple: 'bg-purple-500/25',
+      pink: 'bg-pink-500/25',
+      indigo: 'bg-[#00445d]/40',
+      cyan: 'bg-cyan-500/25',
+      orange: 'bg-orange-500/25',
+      emerald: 'bg-emerald-500/25'
+    } as const;
+    return backgrounds[color] || 'bg-white/20';
   };
 
   const getTrendIcon = () => {
