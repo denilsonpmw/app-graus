@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import AdminSidebar from "@/components/AdminSidebar";
 import { 
   Settings,
   Users,
@@ -128,11 +127,7 @@ export default function AdminConfiguracoesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AdminSidebar />
-
-      {/* Main Content */}
-      <div className="ml-64">
+    <main className="min-h-screen bg-gray-50">
         {/* Header */}
         <header className="bg-white shadow-sm border-b px-6 py-4">
           <div className="flex items-center justify-between">
@@ -638,8 +633,7 @@ export default function AdminConfiguracoesPage() {
               </Card>
             </div>
           )}
-        </div>
-      </div>
     </div>
+  </main>
   );
 }

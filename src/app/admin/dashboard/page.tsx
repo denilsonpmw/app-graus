@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import AdminSidebar from "@/components/AdminSidebar";
+import { getGreeting } from "@/lib/utils/greeting";
+
 import { 
   Users, 
   DollarSign, 
@@ -23,6 +25,7 @@ import {
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
+  const { data: session } = useSession();
   const [selectedPeriod, setSelectedPeriod] = useState("30");
   
   // Dados gerais do sistema
@@ -133,16 +136,16 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AdminSidebar />
-
+  <main className="min-h-screen bg-gray-50">
       {/* Main Content */}
-      <div className="ml-64">
-        {/* Header */}
+  <div className="">
+  {/* Header */}
         <header className="bg-white shadow-sm border-b px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Dashboard Administrativo</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {getGreeting(session?.user?.name || 'Administrador')}
+              </h2>
               <p className="text-gray-600">Visão geral de vendas, afiliados e performance</p>
             </div>
             <div className="flex items-center space-x-4">
@@ -359,8 +362,8 @@ export default function AdminDashboardPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
-    </div>
+      </div>{/* end inner wrapper */}
+      </div>{/* end inner wrapper */}
+    </main>
   );
 }

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import AdminSidebar from "@/components/AdminSidebar";
 import { 
   Package, 
   Search,
@@ -396,11 +395,7 @@ export default function AdminProdutosPage() {
   const lowStockProducts = products.filter(p => p.stock <= p.minStock).length;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AdminSidebar />
-
-      {/* Main Content */}
-      <div className="ml-64">
+    <main className="min-h-screen bg-gray-50">
         {/* Header */}
         <header className="bg-white shadow-sm border-b px-6 py-4">
           <div className="flex items-center justify-between">
@@ -738,8 +733,7 @@ export default function AdminProdutosPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
     </div>
+  </main>
   );
 }

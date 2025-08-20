@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import { hashPassword, generateAffiliateCode, getPlanPrice, addYears } from '../src/lib/utils/helpers'
+import { hashPassword, generateAffiliateCode } from '../src/lib/utils/server-helpers'
+import { getPlanPrice, addYears } from '../src/lib/utils/helpers'
 
 const prisma = new PrismaClient()
 

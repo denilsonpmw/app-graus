@@ -146,28 +146,3 @@ export function getNextSaleStatus(currentStatus: string): string | null {
   
   return statusFlow[currentStatus as keyof typeof statusFlow] || null
 }
-
-// ==============================
-// Cumprimentos (duplicado de greeting.ts para evitar erro de import incorreto em cache)
-// Motivo: build estava tentando buscar getGreeting em helpers.ts
-// Mantemos aqui uma versão simples que não depende de nada do servidor
-// ==============================
-export function getBrazilTime(): Date {
-  const now = new Date()
-  const utc = now.getTime() + (now.getTimezoneOffset() * 60000)
-  return new Date(utc + (-3 * 3600000)) // GMT-3
-}
-
-export function getGreeting(name: string): string {
-  try {
-    const hour = getBrazilTime().getHours()
-    const greeting = hour >= 5 && hour < 12
-      ? 'Bom dia'
-      : hour >= 12 && hour < 18
-        ? 'Boa tarde'
-        : 'Boa noite'
-    return `${greeting}, ${name}!`
-  } catch {
-    return `Olá, ${name}!`
-  }
-}

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
-import { createPaginationResult } from '@/lib/utils/helpers'
+import { createPaginationResult } from '@/lib/utils/server-helpers'
 
 interface CommissionFilters {
   search?: string

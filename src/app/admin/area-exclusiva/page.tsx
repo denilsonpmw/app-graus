@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import AdminSidebar from "@/components/AdminSidebar";
 
 // Forçar renderização dinâmica
 export const dynamic = 'force-dynamic';
@@ -36,15 +35,15 @@ import {
 
 export default function AdminAreaExclusivaPage() {
   const [activeTab, setActiveTab] = useState("treinamentos");
-  // const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
   
-  // Detecta a aba via URL quando a página carrega
-  // useEffect(() => {
-  //   const tab = searchParams.get('tab');
-  //   if (tab && ['treinamentos', 'materiais', 'suporte'].includes(tab)) {
-  //     setActiveTab(tab);
-  //   }
-  // }, [searchParams]);
+  // Sincroniza a aba com o parâmetro ?tab
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab && ['treinamentos', 'materiais', 'suporte'].includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
   
   // Dados dos treinamentos (visão administrativa)
   const trainings = [
@@ -176,11 +175,7 @@ export default function AdminAreaExclusivaPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />
-
-      {/* Main Content */}
-      <div className="ml-64">
+    <main className="min-h-screen bg-gray-50">
         {/* Header */}
         <header className="bg-white shadow-sm border-b px-6 py-4">
           <div className="flex items-center justify-between">
@@ -493,8 +488,7 @@ export default function AdminAreaExclusivaPage() {
               </div>
             </div>
           )}
-        </div>
-      </div>
     </div>
+  </main>
   );
 }

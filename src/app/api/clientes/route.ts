@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { createCustomerSchema } from '@/lib/validations/schemas'
-import { createPaginationResult } from '@/lib/utils/helpers'
+import { createPaginationResult } from '@/lib/utils/server-helpers'
 import { nanoid } from 'nanoid'
 
 interface CustomerFilters {

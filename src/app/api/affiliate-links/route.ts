@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth/auth.config'
 import { prisma } from '@/lib/db/prisma'
 import { createAffiliateLinkSchema } from '@/lib/validations/schemas'
-import { createPaginationResult, generateLinkCode } from '@/lib/utils/helpers'
+import { createPaginationResult, generateLinkCode } from '@/lib/utils/server-helpers'
 import { nanoid } from 'nanoid'
 
 interface LinkFilters {

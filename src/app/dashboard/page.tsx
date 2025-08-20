@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Sidebar from "@/components/Sidebar";
+import { getGreeting } from "@/lib/utils/greeting";
 import { 
   DollarSign, 
   Users, 
@@ -93,7 +94,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
-              <p className="text-gray-600">Bem-vindo de volta, {affiliateData.name}!</p>
+              <p className="text-gray-600">{getGreeting(affiliateData.name)}</p>
             </div>
             <div className="flex items-center space-x-4">
               <div className="text-right">

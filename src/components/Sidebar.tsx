@@ -46,7 +46,18 @@ export default function Sidebar({ className = "", activeTab, onTabChange }: Side
   };
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: '/login' });
+    console.log('🔄 Iniciando logout...');
+    try {
+      await signOut({ callbackUrl: '/' });
+      console.log('✅ Logout realizado com sucesso');
+    } catch (error) {
+      console.error('❌ Erro no logout:', error);
+      console.log('🔄 Tentando logout manual...');
+      // Fallback: limpar sessão manualmente e redirecionar
+      document.cookie = 'next-auth.session-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      document.cookie = 'next-auth.csrf-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      window.location.href = '/';
+    }
   };
 
   const menuItems: MenuSection[] = [
@@ -108,6 +119,7 @@ export default function Sidebar({ className = "", activeTab, onTabChange }: Side
               const handleClick = (e: React.MouseEvent) => {
                 // Se item tem função onClick (como logout)
                 if (item.onClick) {
+                  console.log('🖱️ Clique no item:', item.label);
                   e.preventDefault();
                   item.onClick();
                   return;

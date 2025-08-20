@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import AdminSidebar from "@/components/AdminSidebar";
 import { 
   Users, 
   Search,
@@ -234,12 +233,8 @@ export default function AdminAfiliadosPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AdminSidebar />
-
-      {/* Main Content */}
-      <div className="ml-64">
-        {/* Header */}
+    <main className="min-h-screen bg-gray-50">
+      {/* Header */}
         <header className="bg-white shadow-sm border-b px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
@@ -259,8 +254,8 @@ export default function AdminAfiliadosPage() {
           </div>
         </header>
 
-        {/* Stats Cards */}
-        <div className="p-6">
+  {/* Stats Cards */}
+  <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -487,8 +482,7 @@ export default function AdminAfiliadosPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
       </div>
-    </div>
+    </main>
   );
 }

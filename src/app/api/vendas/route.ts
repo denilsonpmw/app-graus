@@ -6,9 +6,11 @@ import {
   type CreateSaleData,
   type SalesFilters 
 } from '@/lib/validations/schemas'
-import { 
+import {
   createPaginationResult,
-  buildWhereClause,
+  buildWhereClause
+} from '@/lib/utils/server-helpers'
+import {
   calculateCommission,
   getCommissionRate
 } from '@/lib/utils/helpers'

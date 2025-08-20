@@ -9,7 +9,7 @@ import {
 import { 
   createPaginationResult,
   buildWhereClause
-} from '@/lib/utils/helpers'
+} from '@/lib/utils/server-helpers'
 import { nanoid } from 'nanoid'
 
 // GET /api/produtos - Listar produtos com filtros e paginação

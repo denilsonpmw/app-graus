@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { 
   Zap, 
@@ -34,6 +34,7 @@ interface MenuItem {
 
 export default function AdminSidebar({ className = "", activeTab, onTabChange }: AdminSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   
   const isActive = (path: string) => {
     if (path === '/admin/dashboard') {
@@ -43,7 +44,18 @@ export default function AdminSidebar({ className = "", activeTab, onTabChange }:
   };
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: '/login' });
+    console.log('🔄 Iniciando logout (admin)...');
+    try {
+      await signOut({ callbackUrl: '/' });
+      console.log('✅ Logout admin realizado com sucesso');
+    } catch (error) {
+      console.error('❌ Erro no logout admin:', error);
+      console.log('🔄 Tentando logout manual...');
+      // Fallback: limpar sessão manualmente e redirecionar
+      document.cookie = 'next-auth.session-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      document.cookie = 'next-auth.csrf-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      window.location.href = '/';
+    }
   };
 
   const menuItems = [
@@ -74,7 +86,7 @@ export default function AdminSidebar({ className = "", activeTab, onTabChange }:
     }
   ];
 
-  const isAreaExclusiva = pathname === '/admin/area-exclusiva';
+  const isAreaExclusiva = pathname.startsWith('/admin/area-exclusiva');
 
   return (
     <div className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 ${className}`}>
@@ -109,11 +121,16 @@ export default function AdminSidebar({ className = "", activeTab, onTabChange }:
               
               const handleClick = (e: React.MouseEvent) => {
                 if (item.label === "Sair") {
+                  console.log('🖱️ Clique no logout admin');
                   e.preventDefault();
                   handleLogout();
                 } else if (isAreaExclusiva && item.tab && onTabChange) {
                   e.preventDefault();
                   onTabChange(item.tab);
+                  // Atualiza a URL com query sem reload
+                  const base = '/admin/area-exclusiva';
+                  const newUrl = `${base}?tab=${item.tab}`;
+                  router.push(newUrl);
                 }
               };
               

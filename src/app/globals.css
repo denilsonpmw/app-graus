@@ -25,3 +25,38 @@
     @apply border border-green-600 text-green-700 hover:bg-green-50 font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
   }
 }
+
+@layer utilities {
+  /* Animações personalizadas para a página de login */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+  
+  /* Grid pattern para background */
+  .bg-grid-white\/\[0\.02\] {
+    background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  }
+  
+  /* Glass morphism effect */
+  .backdrop-blur-glass {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+}
