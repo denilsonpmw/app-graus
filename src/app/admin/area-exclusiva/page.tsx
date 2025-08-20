@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,7 +33,10 @@ import {
   Settings
 } from "lucide-react";
 
-export default function AdminAreaExclusivaPage() {
+// Componente interno que consome useSearchParams. Mantido separado
+// para permitir que a página raiz envolva em <Suspense /> conforme
+// recomendação do Next.js ao usar hooks de navegação.
+function AreaExclusivaContent() {
   const [activeTab, setActiveTab] = useState("treinamentos");
   const searchParams = useSearchParams();
   
@@ -490,5 +493,13 @@ export default function AdminAreaExclusivaPage() {
           )}
     </div>
   </main>
+  );
+}
+
+export default function AdminAreaExclusivaPage() {
+  return (
+    <Suspense fallback={<div className="p-6 text-gray-600">Carregando área exclusiva...</div>}>
+      <AreaExclusivaContent />
+    </Suspense>
   );
 }
