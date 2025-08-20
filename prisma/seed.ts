@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, SubscriptionPlan, SubscriptionStatus, SaleStatus, PaymentStatus } from '@prisma/client'
 import { hashPassword, generateAffiliateCode } from '../src/lib/utils/server-helpers'
 import { getPlanPrice, addYears } from '../src/lib/utils/helpers'
 
@@ -30,7 +30,7 @@ async function main() {
       name: 'Administrador',
       email: 'admin@graussolar.com.br',
       password: adminPassword,
-      role: 'ADMIN',
+  role: 'ADMIN',
       phone: '(11) 99999-9999',
       isActive: true,
       isAdmin: true,
@@ -92,46 +92,47 @@ async function main() {
       email: 'maria.silva@graussolar.com.br',
       phone: '(11) 99999-1234',
       cpfCnpj: '12345678900',
-      plan: 'PREMIUM' as const,
+  plan: SubscriptionPlan.PREMIUM,
     },
     {
       name: 'João Silva',
       email: 'joao.silva@email.com',
       phone: '(11) 99999-9999',
       cpfCnpj: '12345678901',
-      plan: 'PREMIUM' as const,
+  plan: SubscriptionPlan.PREMIUM,
     },
     {
       name: 'Ana Costa',
       email: 'ana.costa@email.com',
       phone: '(21) 98888-8888',
       cpfCnpj: '12345678902',
-      plan: 'ADVANCED' as const,
+  plan: SubscriptionPlan.ADVANCED,
     },
     {
       name: 'Pedro Oliveira',
       email: 'pedro.oliveira@email.com',
       phone: '(31) 97777-7777',
       cpfCnpj: '12345678903',
-      plan: 'PREMIUM' as const,
+  plan: SubscriptionPlan.PREMIUM,
     },
     {
       name: 'Carlos Lima',
       email: 'carlos.lima@email.com',
       phone: '(41) 96666-6666',
       cpfCnpj: '12345678904',
-      plan: 'LIGHT' as const,
+  plan: SubscriptionPlan.LIGHT,
     },
     {
       name: 'Fernanda Santos',
       email: 'fernanda.santos@email.com',
       phone: '(51) 95555-5555',
       cpfCnpj: '12345678905',
-      plan: 'ADVANCED' as const,
+  plan: SubscriptionPlan.ADVANCED,
     },
   ]
 
-  const affiliates = []
+  // Tipar explicitamente para evitar inferência 'never'
+  const affiliates: Awaited<ReturnType<typeof prisma.affiliate.create>>[] = []
   for (const affiliateData of affiliatesData) {
     const password = await hashPassword('123456')
     const affiliateCode = generateAffiliateCode()
@@ -145,7 +146,7 @@ async function main() {
         phone: affiliateData.phone,
         cpfCnpj: affiliateData.cpfCnpj,
         password,
-        role: 'AFFILIATE',
+  role: 'AFFILIATE',
         isActive: true,
       }
     })
@@ -154,8 +155,8 @@ async function main() {
       data: {
         userId: user.id,
         affiliateCode,
-        subscriptionPlan: affiliateData.plan,
-        subscriptionStatus: 'ACTIVE',
+  subscriptionPlan: affiliateData.plan,
+  subscriptionStatus: SubscriptionStatus.ACTIVE,
         subscriptionDate,
         subscriptionExpiry,
         bankAccount: '12345-6',
@@ -169,8 +170,8 @@ async function main() {
     await prisma.subscription.create({
       data: {
         affiliateId: affiliate.id,
-        plan: affiliateData.plan,
-        status: 'ACTIVE',
+  plan: affiliateData.plan,
+  status: SubscriptionStatus.ACTIVE,
         amount: getPlanPrice(affiliateData.plan),
         paymentMethod: 'PIX',
         startDate: subscriptionDate,
@@ -222,14 +223,14 @@ async function main() {
   console.log('👤 Clientes criados')
 
   // Criar vendas de exemplo
-  const sales = []
+  const sales: Awaited<ReturnType<typeof prisma.sale.create>>[] = []
   for (let i = 0; i < 10; i++) {
     const affiliate = affiliates[Math.floor(Math.random() * affiliates.length)]
     const product = products[Math.floor(Math.random() * products.length)]
     const customer = customers[Math.floor(Math.random() * customers.length)]
     
-    const commissionRate = affiliate.subscriptionPlan === 'PREMIUM' ? 5 : 
-                          affiliate.subscriptionPlan === 'ADVANCED' ? 3 : 2
+  const commissionRate = affiliate.subscriptionPlan === SubscriptionPlan.PREMIUM ? 5 : 
+              affiliate.subscriptionPlan === SubscriptionPlan.ADVANCED ? 3 : 2
     const commissionAmount = (product.price.toNumber() * commissionRate) / 100
 
     const sale = await prisma.sale.create({
@@ -238,7 +239,7 @@ async function main() {
         productId: product.id,
         affiliateId: affiliate.id,
         amount: product.price,
-        status: Math.random() > 0.3 ? 'PAID' : 'CLOSED',
+  status: Math.random() > 0.3 ? SaleStatus.PAID : SaleStatus.CLOSED,
         commissionRate,
         commissionAmount,
         contractSigned: true,
@@ -252,8 +253,8 @@ async function main() {
         saleId: sale.id,
         affiliateId: affiliate.id,
         amount: commissionAmount,
-        status: sale.status === 'PAID' ? 'PAID' : 'PENDING',
-        paymentDate: sale.status === 'PAID' ? new Date() : null,
+  status: sale.status === SaleStatus.PAID ? PaymentStatus.PAID : PaymentStatus.PENDING,
+  paymentDate: sale.status === SaleStatus.PAID ? new Date() : null,
       }
     })
 

@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth/auth.config'
 import { prisma } from '@/lib/db/prisma'
 import { createAffiliateLinkSchema } from '@/lib/validations/schemas'
-import { createPaginationResult, generateLinkCode } from '@/lib/utils/server-helpers'
+import { createPaginationResult } from '@/lib/utils/server-helpers'
 import { nanoid } from 'nanoid'
 
 interface LinkFilters {
@@ -176,7 +176,8 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    const pagination = createPaginationResult(processedLinks, total, page, limit)
+  // Ordem correta: (data, page, limit, total)
+  const pagination = createPaginationResult(processedLinks, page, limit, total)
 
     // Calcular estatísticas globais
     const totalClicks = links.reduce((sum: number, link: any) => sum + link.clicks.length, 0)
@@ -237,18 +238,18 @@ export async function POST(request: NextRequest) {
     const validatedData = createAffiliateLinkSchema.parse(body)
 
     // Verificar se produto existe (apenas se productId foi fornecido)
-    let product = null
+  let product: { id: string } | null = null
     if (validatedData.productId) {
-      product = await prisma.product.findUnique({
+      const found = await prisma.product.findUnique({
         where: { id: validatedData.productId }
       })
-
-      if (!product) {
+      if (!found) {
         return NextResponse.json(
           { error: 'Produto não encontrado' },
           { status: 404 }
         )
       }
+      product = { id: found.id }
     }
 
     // Verificar se já existe link para esta combinação (apenas se tiver produto específico)
@@ -270,9 +271,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Gerar código único
-    const linkCode = generateLinkCode()
-
     // Criar link
     const link = await prisma.affiliateLink.create({
       data: {
@@ -284,6 +282,7 @@ export async function POST(request: NextRequest) {
         utmSource: validatedData.utmSource || null,
         utmMedium: validatedData.utmMedium || null,
         utmCampaign: validatedData.utmCampaign || null,
+  isPrimary: !validatedData.customSlug,
         expiresAt: validatedData.expiresAt,
       },
       include: {
