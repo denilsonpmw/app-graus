@@ -2,12 +2,17 @@
 
 import { CheckCircle, Users, TrendingUp, Shield, Star, Zap, BarChart3, MessageCircle } from "lucide-react";
 import AnimatedBackground from "@/components/ui/AnimatedBackground";
+import dynamic from "next/dynamic";
 import GradientButton from "@/components/ui/GradientButton";
 import GradientText from "@/components/ui/GradientText";
 import ModernCard from "@/components/ui/ModernCard";
 import StatsCard from "@/components/ui/StatsCard";
 
 export default function HomePage() {
+  const BackgroundPaths = dynamic(() => import("@/components/ui/background-paths").then(m => m.BackgroundPaths), {
+    ssr: false,
+    loading: () => <div className="w-full h-[60vh] flex items-center justify-center text-white/50">Carregando animação...</div>
+  });
   const plans = [
     {
       name: "Light",
@@ -95,8 +100,12 @@ export default function HomePage() {
             </div>
           </header>
 
-          {/* Hero Section */}
-          <section className="container mx-auto px-4 py-20 text-center">
+          {/* Hero Section with optional animated background paths behind existing hero */}
+          <section className="relative">
+            <div className="absolute inset-0 -z-10 opacity-30 pointer-events-none">
+              <BackgroundPaths title="Energia Solar" />
+            </div>
+            <div className="container mx-auto px-4 py-20 text-center">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-6xl md:text-7xl font-bold mb-6 leading-tight">
                 Seja um {""}
@@ -164,6 +173,7 @@ export default function HomePage() {
                 color="orange"
                 highContrast
               />
+            </div>
             </div>
           </section>
 
